@@ -8,10 +8,22 @@ public class MySocketWriter extends Thread {
 	private DataInputStream in; // Initializing the DataInputStream
 	private DataOutputStream out; //Initializing the Data Out
 	private Socket socketRef;
+	private String username = "";
 	
 	
 	public MySocketWriter(Socket socket) {
 		try {
+			out = new DataOutputStream(socket.getOutputStream());
+			in = new DataInputStream(System.in);
+			socketRef = socket;
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public MySocketWriter(Socket socket, String name) {
+		try {
+			username = name;
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(System.in);
 			socketRef = socket;
@@ -28,7 +40,7 @@ public class MySocketWriter extends Thread {
             try
             { 
                 line = in.readLine();
-                out.writeUTF(line);
+                out.writeUTF(username+": " +line);
             } 
             catch(IOException i) 
             { 
